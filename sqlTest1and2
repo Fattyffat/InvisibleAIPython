@@ -1,0 +1,32 @@
+Test 1:
+first_name,last_name,company,country,subscription_start_date
+Xavier,Smith,XCorp,Latvia,2023-01-01
+Alice,Johnson,YTech,Canada,2023-03-15
+
+SELECT company 
+FROM customers 
+WHERE country = 'Latvia' 
+  AND first_name LIKE 'X%' 
+  AND subscription_start_date < DATE('now');  
+
+
+Test 2:
+CREATE TABLE books (
+    title VARCHAR(255) NOT NULL,
+    author VARCHAR(255) NOT NULL,
+    isbn VARCHAR(13) NOT NULL UNIQUE,
+    genre VARCHAR(50),
+    publication_year INTEGER,
+    price DECIMAL(5,2),
+    stock_quantity INTEGER
+);
+
+CREATE TABLE books (
+    title VARCHAR(255) NOT NULL,
+    author VARCHAR(255) NOT NULL,
+    isbn VARCHAR(13) NOT NULL UNIQUE,
+    genre VARCHAR(50),
+    publication_year INTEGER,
+    price DECIMAL(5,2),
+    stock_quantity INTEGER
+);
