@@ -1,0 +1,299 @@
+<!-- HTML Test 1 and 2 are both in here
+ If you guys at Invisible AI want to test it out just comment/uncomment 
+ the html part you want! 
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Todo List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: #f0f2f5;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            color: #1a73e8;
+            margin: 30px 0;
+        }
+
+        #input-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        #todo-input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: #1a73e8;
+            color: white;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        #todo-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            background: white;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+        }
+
+        .todo-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .todo-item:last-child {
+            border-bottom: none;
+        }
+
+        .todo-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .edit-btn {
+            background: #34a853;
+        }
+
+        .delete-btn {
+            background: #ea4335;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Todo List</h1>
+        </header>
+        
+        <div id="input-container">
+            <input type="text" id="todo-input" placeholder="Add a new task...">
+            <button onclick="addTodo()">Add</button>
+        </div>
+        
+        <ul id="todo-list"></ul>
+    </div>
+
+    <script>
+        function addTodo() {
+            const input = document.getElementById('todo-input');
+            const text = input.value.trim();
+            
+            if (text) {
+                const todo = createTodoItem(text);
+                document.getElementById('todo-list').appendChild(todo);
+                input.value = '';
+            }
+        }
+
+        function createTodoItem(text) {
+            const li = document.createElement('li');
+            li.className = 'todo-item';
+            
+            li.innerHTML = `
+                <span>${text}</span>
+                <div class="todo-actions">
+                    <button class="edit-btn" onclick="editTodo(this)">Edit</button>
+                    <button class="delete-btn" onclick="deleteTodo(this)">Delete</button>
+                </div>
+            `;
+            
+            return li;
+        }
+
+        function deleteTodo(button) {
+            button.closest('li').remove();
+        }
+
+        function editTodo(button) {
+            const li = button.closest('li');
+            const span = li.querySelector('span');
+            const currentText = span.textContent;
+            
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.value = currentText;
+            input.style.flex = '1';
+            input.style.marginRight = '10px';
+            
+            const saveButton = document.createElement('button');
+            saveButton.textContent = 'Save';
+            saveButton.className = 'edit-btn';
+            saveButton.onclick = () => saveEdit(li, input, saveButton);
+            
+            li.querySelector('.todo-actions').prepend(saveButton);
+            span.replaceWith(input);
+            input.focus();
+        }
+
+        function saveEdit(li, input, saveButton) {
+            const newText = input.value.trim();
+            if (newText) {
+                const span = document.createElement('span');
+                span.textContent = newText;
+                input.replaceWith(span);
+                saveButton.remove();
+            }
+        }
+
+        document.getElementById('todo-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') addTodo();
+        });
+    </script>
+</body>
+</html> 
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Book List</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #ecf0f1;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .book-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .book-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .book-card h2 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .book-card p {
+            margin: 0.5rem 0;
+            color: #666;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: opacity 0.2s;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .book-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>My Book List</h1>
+    </header>
+
+    <main>
+        <button onclick="addBook()">Add Book</button>
+        <section class="book-list" id="bookList">
+            
+            <article class="book-card">
+                <h2>Example book 1 </h2>
+                <p><strong>Author:</strong> Author</p>
+                <p><strong>Description:</strong> Book Description </p>
+            </article>
+        </section>
+    </main>
+
+    <script>
+        function addBook() {
+            const title = prompt('Enter book title:');
+            if (!title) return;
+            
+            const author = prompt('Enter author name:');
+            if (!author) return;
+            
+            const description = prompt('Enter book description:');
+            if (!description) return;
+
+            const bookCard = document.createElement('article');
+            bookCard.className = 'book-card';
+            bookCard.innerHTML = `
+                <h2>${title}</h2>
+                <p><strong>Author:</strong> ${author}</p>
+                <p><strong>Description:</strong> ${description}</p>
+            `;
+
+            document.getElementById('bookList').appendChild(bookCard);
+        }
+    </script>
+</body>
+</html>  -->
